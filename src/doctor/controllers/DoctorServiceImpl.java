@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DoctorServiceImpl implements DoctorService {
-    private final Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
 
     @Override
     public void addDoctor(Doctor doctor) {
@@ -91,7 +91,6 @@ public class DoctorServiceImpl implements DoctorService {
         return false;
     }
 
-    // 🔹 Helper Method: Finds Doctor by ID (Case-Insensitive)
     private Optional<Doctor> findDoctorById(String id) {
         return doctors.stream()
                 .filter(d -> d.getId().equalsIgnoreCase(id))

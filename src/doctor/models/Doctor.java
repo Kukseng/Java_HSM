@@ -16,7 +16,7 @@ public class Doctor {
     private String id;
     private String name;
     private Specialization specialization;
-    private String contactDetails;
+    private String phoneNumber;
     private boolean available;
     private String qualifications;
     private int experience;
