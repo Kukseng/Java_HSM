@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 
 public class Doctor {
-    private String doctorId;
+    private String doctorId = "1";
     private String doctorName;
     private Specialization specialization;
     private String contactDetails;

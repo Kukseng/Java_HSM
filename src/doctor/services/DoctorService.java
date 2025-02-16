@@ -11,4 +11,6 @@ public interface DoctorService {
     void deleteDoctor(Doctor doctor);
     void getDoctorById();
     void displayDoctorDetails(Doctor doctor);
+    void viewAppointment();
+    void manageDoctorAvailability(Doctor doctor);
 }

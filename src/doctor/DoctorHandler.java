@@ -44,6 +44,10 @@ public class DoctorHandler {
         table.addCell(BRIGHT_GREEN + "4" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Show Doctor Information" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "5" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "View Appointment" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "6" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "Manage Doctor Availability" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "0" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Exit" + RESET, centerStyle);
 
 
@@ -228,17 +232,15 @@ public class DoctorHandler {
                         System.out.println(BRIGHT_GREEN + padding + "Doctor not found." + RESET);
                     }
                 }
-                case 4 -> {
-                    doctorService.getDoctorById();
-                }
-                case 5 -> {
+                case 4 -> doctorService.getDoctorById();
+                case 5 -> doctorService.viewAppointment();
+                case 6 -> doctorService.manageDoctorAvailability(new Doctor());
+                case 0 -> {
                     System.out.println(BRIGHT_GREEN + padding + "Exiting..." + RESET);
                     scanner.close();
                     return;
                 }
-                default -> {
-                    System.out.println(BRIGHT_GREEN + padding + "Invalid choice, try again." + RESET);
-                }
+                default -> System.out.println(BRIGHT_GREEN + padding + "Invalid choice, try again." + RESET);
             }
         } while (choice != 0);
     }
