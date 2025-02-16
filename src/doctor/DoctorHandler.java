@@ -3,6 +3,7 @@ package doctor;
 import doctor.controllers.DoctorServiceImpl;
 import doctor.models.Doctor;
 import doctor.services.DoctorService;
+
 import org.nocrala.tools.texttablefmt.Table;
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
@@ -57,8 +58,8 @@ public class DoctorHandler {
     public static void main(String[] args) {
         DoctorServiceImpl doctorService = new DoctorServiceImpl();
         Scanner scanner = new Scanner(System.in);
-        int choice;
-        final String CLEAR_SCREEN = "\033[2J";
+
+        int choice;;
 
         do {
             tableGenerator();
@@ -83,6 +84,7 @@ public class DoctorHandler {
                         }
 
                         System.out.print("Enter Specialization (e.g., CARDIOLOGY): ");
+
                         String specializationInput = scanner.nextLine().trim();
                         Doctor.Specialization specialization;
                         try {
@@ -163,7 +165,7 @@ public class DoctorHandler {
                     Doctor doctorToUpdate = null;
 
                     for (Doctor doc : DoctorService.doctors) {
-                        if (doc.getId().equals(id)) {
+                        if (doc.getDoctorId().equals(id)) {
                             doctorToUpdate = doc;
                             break;
                         }
@@ -177,7 +179,7 @@ public class DoctorHandler {
                     System.out.print("Enter new name (leave blank to keep unchanged): ");
                     String newName = scanner.nextLine();
                     if (!newName.isEmpty()) {
-                        doctorToUpdate.setName(newName);
+                        doctorToUpdate.setDoctorName(newName);
                     }
 
                     System.out.print("Enter new Specialization (leave blank to keep unchanged): ");
@@ -189,7 +191,7 @@ public class DoctorHandler {
                     System.out.print("Enter new Contact Details (leave blank to keep unchanged): ");
                     String newContactDetails = scanner.nextLine();
                     if (!newContactDetails.isEmpty()) {
-                        doctorToUpdate.setPhoneNumber(newContactDetails);
+                        doctorToUpdate.setContactDetails(newContactDetails);
                     }
 
                     doctorService.updateDoctor(doctorToUpdate);
@@ -203,7 +205,7 @@ public class DoctorHandler {
                     Doctor doctorToDelete = null;
 
                     for (Doctor doc : DoctorService.doctors) {
-                        if (doc.getId().equals(id) && doc.getName().equals(name)) {
+                        if (doc.getDoctorId().equals(id) && doc.getDoctorName().equals(name)) {
                             doctorToDelete = doc;
                             break;
                         }

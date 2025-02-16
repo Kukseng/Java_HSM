@@ -13,10 +13,10 @@ import lombok.ToString;
 @ToString
 
 public class Doctor {
-    private String id;
-    private String name;
+    private String doctorId;
+    private String doctorName;
     private Specialization specialization;
-    private String phoneNumber;
+    private String contactDetails;
     private boolean available;
     private String qualifications;
     private int experience;

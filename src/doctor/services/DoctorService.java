@@ -10,4 +10,5 @@ public interface DoctorService {
     void updateDoctor(Doctor doctor);
     void deleteDoctor(Doctor doctor);
     void getDoctorById();
+    void displayDoctorDetails(Doctor doctor);
 }
