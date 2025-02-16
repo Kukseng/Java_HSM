@@ -2,6 +2,7 @@ package doctor;
 
 import doctor.controllers.DoctorServiceImpl;
 import doctor.models.Doctor;
+import doctor.models.SpecializationTable;
 import doctor.services.DoctorService;
 
 import org.nocrala.tools.texttablefmt.Table;
@@ -13,15 +14,17 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DoctorHandler {
+    final static String BLUE = "\u001B[34m";
+    final static String RESET = "\u001B[0m";
+    final static String BOLD_GREEN = "\033[1;92m";
+    final static String BRIGHT_GREEN = "\033[92m";
+
+    static int consoleWidth = 180;
+    static int tableWidth = 100;
+    static int leftPadding = (consoleWidth - tableWidth) / 2;
+    static String padding = " ".repeat(leftPadding);
+
     static void tableGenerator() {
-        final String BLUE = "\u001B[34m";
-        final String RESET = "\u001B[0m";
-        final String YELLOW = "\u001B[33m";
-        final String BOLD_GREEN = "\033[1;92m";
-        final String BRIGHT_GREEN = "\033[92m";
-
-        int consoleWidth = 180;
-
         Table table = new Table(2, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.ALL);
         CellStyle centerStyle = new CellStyle(CellStyle.HorizontalAlign.center);
 
@@ -43,9 +46,7 @@ public class DoctorHandler {
         table.addCell(BRIGHT_GREEN + "5" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Exit" + RESET, centerStyle);
 
-        int tableWidth = 100;
-        int leftPadding = (consoleWidth - tableWidth) / 2;
-        String padding = " ".repeat(leftPadding);
+
 
         String[] tableLines = table.render().split("\n");
 
@@ -57,87 +58,98 @@ public class DoctorHandler {
 
     public static void main(String[] args) {
         DoctorServiceImpl doctorService = new DoctorServiceImpl();
+        SpecializationTable spt = new SpecializationTable();
         Scanner scanner = new Scanner(System.in);
 
-        int choice;;
+        int choice = 0;
 
         do {
             tableGenerator();
 
-            System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
-            scanner.nextLine();
+            int leftPadding = (consoleWidth - tableWidth) / 2;
+            String padding = " ".repeat(leftPadding);
+            System.out.print(BRIGHT_GREEN + padding + "Enter your choice: " + RESET);
+
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println(BRIGHT_GREEN + padding + "Please enter a number (0-5)" + RESET);
+                scanner.nextLine();
+                continue;
+            }
 
             switch (choice) {
                 case 1 -> {
                     try {
-                        System.out.print("Enter Doctor ID: ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Doctor ID: " + RESET);
                         String id = scanner.nextLine().trim();
                         if (id.isEmpty()) {
-                            throw new IllegalArgumentException("Doctor ID cannot be empty");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Doctor ID cannot be empty" + RESET);
                         }
 
-                        System.out.print("Enter Doctor Name: ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Doctor Name: " + RESET);
                         String name = scanner.nextLine().trim();
                         if (name.isEmpty()) {
-                            throw new IllegalArgumentException("Doctor name cannot be empty");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Doctor name cannot be empty");
                         }
 
-                        System.out.print("Enter Specialization (e.g., CARDIOLOGY): ");
+                        spt.specializationGenerator();
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Specialization (e.g., CARDIOLOGY): " + RESET);
 
                         String specializationInput = scanner.nextLine().trim();
                         Doctor.Specialization specialization;
                         try {
                             specialization = Doctor.Specialization.valueOf(specializationInput.toUpperCase());
                         } catch (IllegalArgumentException e) {
-                            throw new IllegalArgumentException("Invalid specialization. Please enter a valid specialization");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Invalid specialization. Please enter a valid specialization");
                         }
 
-                        System.out.print("Enter Contact Details: ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Contact Details: " + RESET);
                         String contactDetails = scanner.nextLine().trim();
                         if (contactDetails.isEmpty()) {
-                            throw new IllegalArgumentException("Contact details cannot be empty");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Contact details cannot be empty" + RESET);
                         }
 
-                        System.out.print("Is Doctor Available? (true/false): ");
+                        System.out.print(BRIGHT_GREEN + padding + "Is Doctor Available? (true/false): " + RESET);
                         boolean available;
                         try {
                             available = scanner.nextBoolean();
                             scanner.nextLine();
                         } catch (InputMismatchException e) {
                             scanner.nextLine();
-                            throw new IllegalArgumentException("Please enter either 'true' or 'false' for availability");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Please enter either 'true' or 'false' for availability" + RESET);
                         }
 
-                        System.out.print("Enter Qualifications: ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Qualifications: " + RESET);
                         String qualifications = scanner.nextLine().trim();
                         if (qualifications.isEmpty()) {
-                            throw new IllegalArgumentException("Qualifications cannot be empty!");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Qualifications cannot be empty!" + RESET);
                         }
 
-                        System.out.print("Enter Experience (years): ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Experience (years): " + RESET);
                         int experience;
                         try {
                             experience = scanner.nextInt();
                             scanner.nextLine();
                             if (experience < 0) {
-                                throw new IllegalArgumentException("Experience cannot be negative!");
+                                throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Experience cannot be negative!" + RESET);
                             }
                         } catch (InputMismatchException e) {
                             scanner.nextLine();
-                            throw new IllegalArgumentException("Please enter a valid number for experience");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Please enter a valid number for experience" + RESET);
                         }
 
-                        System.out.print("Enter Department: ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Department: " + RESET);
                         String department = scanner.nextLine().trim();
                         if (department.isEmpty()) {
-                            throw new IllegalArgumentException("Department cannot be empty!");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Department cannot be empty!" + RESET);
                         }
 
-                        System.out.print("Enter Schedule: ");
+                        System.out.print(BRIGHT_GREEN + padding + "Enter Schedule: " + RESET);
                         String schedule = scanner.nextLine().trim();
                         if (schedule.isEmpty()) {
-                            throw new IllegalArgumentException("Schedule cannot be empty!");
+                            throw new IllegalArgumentException(BRIGHT_GREEN + padding + "Schedule cannot be empty!" + RESET);
                         }
 
                         Doctor newDoctor = new Doctor(id, name, specialization, contactDetails,
@@ -146,21 +158,20 @@ public class DoctorHandler {
 
                         try {
                             doctorService.addDoctor(newDoctor);
-                            System.out.println("\nDoctor added successfully!");
                         } catch (Exception e) {
-                            throw new RuntimeException("Failed to add doctor to the system: " + e.getMessage());
+                            throw new RuntimeException(BRIGHT_GREEN + padding + "Failed to add doctor to the system: " + e.getMessage());
                         }
 
                     } catch (IllegalArgumentException e) {
                         System.out.println("\nError: " + e.getMessage());
-                        System.out.println("Please try again with valid input.");
+                        System.out.println(BRIGHT_GREEN + padding + "Please try again with valid input." + RESET);
                     } catch (Exception e) {
                         System.out.println("\nAn unexpected error occurred: " + e.getMessage());
-                        System.out.println("Please contact system administrator.");
+                        System.out.println(BRIGHT_GREEN + padding + "Please contact system administrator." + RESET);
                     }
                 }
                 case 2 -> {
-                    System.out.print("Enter Doctor ID to update: ");
+                    System.out.print(BRIGHT_GREEN + padding + "Enter Doctor ID to update: " + RESET);
                     String id = scanner.nextLine();
                     Doctor doctorToUpdate = null;
 
@@ -172,23 +183,23 @@ public class DoctorHandler {
                     }
 
                     if (doctorToUpdate == null) {
-                        System.out.println("Doctor not found.");
+                        System.out.println(BRIGHT_GREEN + padding + "Doctor not found." + RESET);
                         continue;
                     }
 
-                    System.out.print("Enter new name (leave blank to keep unchanged): ");
+                    System.out.print(BRIGHT_GREEN + padding + "Enter new name (leave blank to keep unchanged): " + RESET);
                     String newName = scanner.nextLine();
                     if (!newName.isEmpty()) {
                         doctorToUpdate.setDoctorName(newName);
                     }
 
-                    System.out.print("Enter new Specialization (leave blank to keep unchanged): ");
+                    System.out.print(BRIGHT_GREEN + padding + "Enter new Specialization (leave blank to keep unchanged): " + RESET);
                     String specializationInput = scanner.nextLine();
                     if (!specializationInput.isEmpty()) {
                         doctorToUpdate.setSpecialization(Doctor.Specialization.valueOf(specializationInput.toUpperCase()));
                     }
 
-                    System.out.print("Enter new Contact Details (leave blank to keep unchanged): ");
+                    System.out.print(BRIGHT_GREEN + padding + "Enter new Contact Details (leave blank to keep unchanged): " + RESET);
                     String newContactDetails = scanner.nextLine();
                     if (!newContactDetails.isEmpty()) {
                         doctorToUpdate.setContactDetails(newContactDetails);
@@ -197,10 +208,10 @@ public class DoctorHandler {
                     doctorService.updateDoctor(doctorToUpdate);
                 }
                 case 3 -> {
-                    System.out.print("Enter Doctor ID to delete: ");
+                    System.out.print(BRIGHT_GREEN + padding + "Enter Doctor ID to delete: " + RESET);
                     String id = scanner.nextLine();
                     System.out.println();
-                    System.out.print("Enter Doctor name to delete: ");
+                    System.out.print(BRIGHT_GREEN + padding + "Enter Doctor name to delete: " + RESET);
                     String name = scanner.nextLine();
                     Doctor doctorToDelete = null;
 
@@ -214,18 +225,20 @@ public class DoctorHandler {
                     if (doctorToDelete != null) {
                         doctorService.deleteDoctor(doctorToDelete);
                     } else {
-                        System.out.println("Doctor not found.");
+                        System.out.println(BRIGHT_GREEN + padding + "Doctor not found." + RESET);
                     }
                 }
                 case 4 -> {
                     doctorService.getDoctorById();
                 }
                 case 5 -> {
-                    System.out.println("Exiting...");
+                    System.out.println(BRIGHT_GREEN + padding + "Exiting..." + RESET);
                     scanner.close();
                     return;
                 }
-                default -> System.out.println("Invalid choice, try again.");
+                default -> {
+                    System.out.println(BRIGHT_GREEN + padding + "Invalid choice, try again." + RESET);
+                }
             }
         } while (choice != 0);
     }
