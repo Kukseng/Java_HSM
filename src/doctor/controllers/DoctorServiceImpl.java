@@ -13,16 +13,16 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DoctorServiceImpl implements DoctorService {
+        final String BLUE = "\u001B[34m";
+        final String RESET = "\u001B[0m";
+        final String BOLD_GREEN = "\033[1;92m";
+        final String BRIGHT_GREEN = "\033[92m";
+        final String RED = "\u001B[31m";
 
-    final static String BLUE = "\u001B[34m";
-    final static String RESET = "\u001B[0m";
-    final static String BOLD_GREEN = "\033[1;92m";
-    final static String BRIGHT_GREEN = "\033[92m";
-
-    static int consoleWidth = 180;
-    static int tableWidth = 100;
-    static int leftPadding = (consoleWidth - tableWidth) / 2;
-    static String padding = " ".repeat(leftPadding);
+        int consoleWidth = 180;
+        int tableWidth = 100;
+        int leftPadding = (consoleWidth - tableWidth) / 2;
+        String padding = " ".repeat(leftPadding);
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -31,7 +31,7 @@ public class DoctorServiceImpl implements DoctorService {
         if (isValidDoctor(doctor, true)) return;
 
         if (findDoctorById(doctor.getDoctorId()).isPresent()) {
-            System.out.println(BRIGHT_GREEN + padding + "Error: A doctor with this ID already exists." + RESET);
+            System.out.println(RED + padding + "Error: A doctor with this ID already exists." + RESET);
             return;
         }
 
@@ -71,7 +71,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void getDoctorById() {
         if (doctors.isEmpty()) {
-            System.out.println(BRIGHT_GREEN + padding + "No doctors available." + RESET);
+            System.out.println(RED + padding + "No doctors available." + RESET);
             return;
         }
 
@@ -79,7 +79,7 @@ public class DoctorServiceImpl implements DoctorService {
         String id = scanner.nextLine().trim();
 
         if (id.isEmpty()) {
-            System.out.println("Error: Doctor ID cannot be empty." + RESET);
+            System.out.println(RED + padding + "Error: Doctor ID cannot be empty." + RESET);
             return;
         }
 
@@ -87,6 +87,49 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.ifPresentOrElse(
                 this::displayDoctorDetails,
                 () -> System.out.println(BRIGHT_GREEN + padding + "Error: Doctor not found." + RESET)
+        );
+    }
+
+    @Override
+    public void getDoctorByName(String doctorName) {
+        if (doctors.isEmpty()) {
+            System.out.println(BRIGHT_GREEN + padding + "No doctors available." + RESET);
+            return;
+        }
+
+        System.out.print(BRIGHT_GREEN + padding + "🔎 Enter Doctor name to view details: " + RESET);
+        String name = scanner.nextLine().trim();
+
+        if (name.isEmpty()) {
+            System.out.println(RED + "Error: Doctor name cannot be empty." + RESET);
+            return;
+        }
+
+        Optional<Doctor> doctor = findDoctorByName(name);
+        doctor.ifPresentOrElse(
+                this::displayDoctorDetails,
+                () -> System.out.println(RED + padding + "Error: Doctor not found." + RESET)
+        );
+    }
+
+    @Override
+    public void getDoctorBySpecialization() {
+        if (doctors.isEmpty()) {
+            System.out.println(RED + padding + "No doctors available." + RESET);
+            return;
+        }
+        System.out.print(BRIGHT_GREEN + padding + "🔎 Enter Doctor specialization to view details: " + RESET);
+        String specializationInput = scanner.nextLine().trim();
+
+        if (specializationInput.isEmpty()) {
+            System.out.println(RED + "Error: Doctor specialization cannot be empty." + RESET);
+            return;
+        }
+
+        Optional<Doctor> doctor = findDoctorBySpecialization(Doctor.Specialization.valueOf(specializationInput));
+        doctor.ifPresentOrElse(
+                this::displayDoctorDetails,
+                () -> System.out.println(RED + padding + "Error: Doctor not found." + RESET)
         );
     }
 
@@ -141,7 +184,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void viewAppointment() {
         if (doctors.isEmpty()) {
-            System.out.println(BRIGHT_GREEN + padding + "No doctors in the system to view appointments." + RESET);
+            System.out.println(RED + padding + "🥲 No doctors in the system to view appointments." + RESET);
             return;
         }
 
@@ -275,5 +318,14 @@ public class DoctorServiceImpl implements DoctorService {
                 .filter(d -> d.getDoctorId().equalsIgnoreCase(id))
                 .findFirst();
     }
-
+    public Optional<Doctor> findDoctorByName(String name) {
+        return doctors.stream()
+                .filter(n -> n.getDoctorName().equalsIgnoreCase(name))
+                .findFirst();
+    }
+    public Optional<Doctor> findDoctorBySpecialization(Doctor.Specialization specialization) {
+        return doctors.stream()
+                .filter(doctor -> doctor.getSpecialization() == specialization)
+                .findFirst();
+    }
 }

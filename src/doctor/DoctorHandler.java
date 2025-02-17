@@ -14,6 +14,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DoctorHandler {
+    DoctorServiceImpl doctorService = new DoctorServiceImpl();
     final static String BLUE = "\u001B[34m";
     final static String RESET = "\u001B[0m";
     final static String BOLD_GREEN = "\033[1;92m";
@@ -42,10 +43,14 @@ public class DoctorHandler {
         table.addCell(BRIGHT_GREEN + "3" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Delete Doctor" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "4" + RESET, centerStyle);
-        table.addCell(BRIGHT_GREEN + "Show Doctor Information" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "Search Doctor By ID" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "5" + RESET, centerStyle);
-        table.addCell(BRIGHT_GREEN + "View Appointment" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "Search Doctor By Name" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "6" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "Search Doctor By Specialization" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "7" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "View Appointment" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "8" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Manage Doctor Availability" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "0" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Exit" + RESET, centerStyle);
@@ -233,8 +238,15 @@ public class DoctorHandler {
                     }
                 }
                 case 4 -> doctorService.getDoctorById();
-                case 5 -> doctorService.viewAppointment();
-                case 6 -> doctorService.manageDoctorAvailability(new Doctor());
+                case 5 -> {
+                    System.out.print(BRIGHT_GREEN + padding + "🔎 Enter Doctor name to view details: " + RESET);
+                    String name = scanner.nextLine().trim();
+                    doctorService.findDoctorByName(name);
+                }
+                case 6 -> doctorService.findDoctorBySpecialization(Doctor.Specialization.CARDIOLOGY);
+
+                case 7 -> doctorService.viewAppointment(); // in progress
+                case 8 -> doctorService.manageDoctorAvailability(new Doctor()); // in progress
                 case 0 -> {
                     System.out.println(BRIGHT_GREEN + padding + "Exiting..." + RESET);
                     scanner.close();
