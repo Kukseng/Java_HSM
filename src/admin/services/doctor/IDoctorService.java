@@ -1,12 +1,11 @@
-package doctor.services;
+package admin.services.doctor;
 
-import doctor.models.Doctor;
+import admin.models.doctor.Doctor;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
-import java.util.Scanner;
 
-public interface DoctorService {
+public interface IDoctorService {
     ArrayList<Doctor> doctors = new ArrayList<>();
+    void adminLogin();
     void addDoctor(Doctor doctor);
     void updateDoctor(Doctor doctor);
     void deleteDoctor(Doctor doctor);

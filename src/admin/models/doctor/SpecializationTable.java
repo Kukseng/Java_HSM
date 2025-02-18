@@ -1,9 +1,10 @@
-package doctor.models;
+package admin.models.doctor;
 
-import org.nocrala.tools.texttablefmt.Table;
+import admin.controllers.TableGenerator;
 import org.nocrala.tools.texttablefmt.BorderStyle;
-import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.CellStyle;
+import org.nocrala.tools.texttablefmt.ShownBorders;
+import org.nocrala.tools.texttablefmt.Table;
 
 public class SpecializationTable {
     public void specializationGenerator() {
@@ -17,7 +18,7 @@ public class SpecializationTable {
         Table table = new Table(1, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.ALL);
         CellStyle centerStyle = new CellStyle(CellStyle.HorizontalAlign.center);
 
-        table.setColumnWidth(0, 40, 90);
+        table.setColumnWidth(0, 63, 125);
 
         table.addCell(BOLD_BLUE + "DOCTOR SPECIALIZATION" + RESET, centerStyle);
 
