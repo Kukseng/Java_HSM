@@ -1,4 +1,4 @@
-package admin.services.patient;
+package admin.services;
 
 import patient.Patient;
 

@@ -1,6 +1,4 @@
-package admin.controllers.admin;
-
-import admin.controllers.doctor.DoctorController;
+package admin.controllers;
 
 public class Admin extends DoctorController {
 

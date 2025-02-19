@@ -1,4 +1,4 @@
-package admin.models.doctor;
+package admin.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

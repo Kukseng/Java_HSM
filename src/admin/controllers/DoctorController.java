@@ -1,18 +1,15 @@
-package admin.controllers.doctor;
+package admin.controllers;
 
-import admin.controllers.TableGenerator;
-import admin.services.doctor.IDoctorServiceImpl;
-import admin.models.doctor.Doctor;
-import admin.models.doctor.SpecializationTable;
-import admin.services.doctor.IDoctorService;
+import admin.services.IDoctorServiceImpl;
+import admin.models.Doctor;
+import admin.models.SpecializationTable;
+import admin.services.IDoctorService;
 
-import com.sun.security.jgss.GSSUtil;
 import org.nocrala.tools.texttablefmt.Table;
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.CellStyle;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.InputMismatchException;
 import java.util.Scanner;

@@ -1,6 +1,5 @@
-package admin.models.doctor;
+package admin.models;
 
-import admin.controllers.TableGenerator;
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.CellStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;

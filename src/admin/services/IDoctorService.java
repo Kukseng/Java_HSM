@@ -1,6 +1,6 @@
-package admin.services.doctor;
+package admin.services;
 
-import admin.models.doctor.Doctor;
+import admin.models.Doctor;
 import java.util.ArrayList;
 
 public interface IDoctorService {
