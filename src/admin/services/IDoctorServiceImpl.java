@@ -1,7 +1,6 @@
-package doctor.controllers;
+package admin.services;
 
-import doctor.models.Doctor;
-import doctor.services.DoctorService;
+import admin.models.Doctor;
 
 import org.nocrala.tools.texttablefmt.Table;
 import org.nocrala.tools.texttablefmt.BorderStyle;
@@ -12,7 +11,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class DoctorServiceImpl implements DoctorService {
+public class IDoctorServiceImpl implements IDoctorService {
         final String BLUE = "\u001B[34m";
         final String RESET = "\u001B[0m";
         final String BOLD_GREEN = "\033[1;92m";
@@ -25,6 +24,12 @@ public class DoctorServiceImpl implements DoctorService {
         String padding = " ".repeat(leftPadding);
 
     private final Scanner scanner = new Scanner(System.in);
+
+
+    @Override
+    public void adminLogin() {
+
+    }
 
     @Override
     public void addDoctor(Doctor doctor) {
@@ -122,7 +127,7 @@ public class DoctorServiceImpl implements DoctorService {
         String specializationInput = scanner.nextLine().trim();
 
         if (specializationInput.isEmpty()) {
-            System.out.println(RED + "Error: Doctor specialization cannot be empty." + RESET);
+            System.out.println(RED + padding + "Error: Doctor specialization cannot be empty." + RESET);
             return;
         }
 
@@ -159,7 +164,7 @@ public class DoctorServiceImpl implements DoctorService {
         table.addCell(doctor.getContactDetails(), centerStyle);
 
         table.addCell(BRIGHT_GREEN + "Available" + RESET, centerStyle);
-        table.addCell(doctor.isAvailable() ? "Yes" : "No", centerStyle);
+        table.addCell(doctor.getAvailable() ? "Yes" : "No", centerStyle);
 
         table.addCell(BRIGHT_GREEN + "Qualifications" + RESET, centerStyle);
         table.addCell(doctor.getQualifications(), centerStyle);
@@ -252,7 +257,7 @@ public class DoctorServiceImpl implements DoctorService {
         for (Doctor doc : doctors) {
             table.addCell(doc.getDoctorId(), centerStyle);
             table.addCell(doc.getDoctorName(), centerStyle);
-            table.addCell(doc.isAvailable() ? "Yes" : "No", centerStyle);
+            table.addCell(doc.getAvailable() ? "Yes" : "No", centerStyle);
         }
 
         String[] tableLines = table.render().split("\n");
@@ -277,25 +282,24 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         doctor = selectedDoctor;
-        if (doctor.isAvailable()) {
+        if (doctor.getAvailable()) {
             System.out.println(BRIGHT_GREEN + padding + "Doctor is available" + RESET);
         }
         System.out.println(BRIGHT_GREEN + padding + "Current availability status for Dr. " + doctor.getDoctorName() + ": " +
-                (doctor.isAvailable() ? "Available" : "Not Available") + RESET);
+                (doctor.getAvailable() ? "Available" : "Not Available") + RESET);
 
         System.out.print(BRIGHT_GREEN + padding + "Do you want to change availability? (y/n): " + RESET);
         String response = scanner.nextLine().trim().toLowerCase();
 
         if (response.equals("y")) {
-            doctor.setAvailable(!doctor.isAvailable());
+            doctor.setAvailable(!doctor.getAvailable());
             System.out.println(BRIGHT_GREEN + padding + "Availability updated to: " +
-                    (doctor.isAvailable() ? "Available" : "Not Available") + RESET);
+                    (doctor.getAvailable() ? "Available" : "Not Available") + RESET);
         } else {
             System.out.println(BRIGHT_GREEN + padding + "Availability remains unchanged." + RESET);
         }
     }
 
-    // 🔹 Helper Method: Validates Doctor Data
     private boolean isValidDoctor(Doctor doctor, boolean isNewDoctor) {
         if (doctor == null) {
             System.out.println(BRIGHT_GREEN + padding + "Error: Doctor object is null." + RESET);
@@ -312,10 +316,9 @@ public class DoctorServiceImpl implements DoctorService {
         return false;
     }
 
-    // 🔹 Helper Method: Finds Doctor by ID (Case-Insensitive)
     public Optional<Doctor> findDoctorById(String id) {
         return doctors.stream()
-                .filter(d -> d.getDoctorId().equalsIgnoreCase(id))
+                .filter(n -> n.getDoctorId().equalsIgnoreCase(id))
                 .findFirst();
     }
     public Optional<Doctor> findDoctorByName(String name) {
@@ -325,7 +328,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
     public Optional<Doctor> findDoctorBySpecialization(Doctor.Specialization specialization) {
         return doctors.stream()
-                .filter(doctor -> doctor.getSpecialization() == specialization)
+                .filter(n -> n.getSpecialization() == specialization)
                 .findFirst();
     }
 }

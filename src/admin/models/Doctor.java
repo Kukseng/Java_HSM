@@ -1,4 +1,4 @@
-package doctor.models;
+package admin.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +17,9 @@ public class Doctor {
     private String doctorName;
     private Specialization specialization;
     private String contactDetails;
-    private boolean available;
+    private Boolean available;
     private String qualifications;
-    private int experience;
+    private Integer experience;
     private String department;
     private String schedule;
 
