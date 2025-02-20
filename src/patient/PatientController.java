@@ -119,9 +119,9 @@ public class PatientController {
         table.addCell(BRIGHT_GREEN + "3" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Delete patient record" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "4" + RESET, centerStyle);
-        table.addCell(BRIGHT_GREEN + "Search for patient" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "Search for doctor" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "5" + RESET, centerStyle);
-        table.addCell(BRIGHT_GREEN + "View all patients" + RESET, centerStyle);
+        table.addCell(BRIGHT_GREEN + "View all doctor" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "6" + RESET, centerStyle);
         table.addCell(BRIGHT_GREEN + "Back to main menu" + RESET, centerStyle);
 //        table.addCell(BRIGHT_GREEN + "5" + RESET, centerStyle);
@@ -149,6 +149,7 @@ public class PatientController {
         while (true) {
             tableGen();
             int choice = 0;
+            System.out.print("Enter an Option:");
             try {
                 choice = scanner.nextInt();
             } catch (InputMismatchException e) {
@@ -180,25 +181,79 @@ public class PatientController {
         }
     }
 
-    public static void registerPatient() {
-        int id = nextPatientId++;
-        System.out.print("Enter Patient Name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter Age: ");
-        int age = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        System.out.print("Enter Gender: ");
-        String gender = scanner.nextLine();
-        System.out.print("Enter Contact Details: ");
-        String contactDetails = scanner.nextLine();
-        System.out.print("Enter Medical History: ");
-        String medicalHistory = scanner.nextLine();
 
-        patients.add(new Patient(id, name, age, gender, contactDetails, medicalHistory));
-        System.out.println("Patient registered successfully!");
-    }
+        public static void registerPatient() {
+            int id = nextPatientId++;
 
-    private static void viewPatients() {
+            // Validate name (Only letters and spaces)
+            String name;
+            while (true) {
+                System.out.print("Enter Patient Name: ");
+                name = scanner.nextLine();
+                if (name.matches("[a-zA-Z ]+")) {
+                    break;
+                }
+                System.out.println("Invalid name! Only letters and spaces are allowed. Try again:");
+            }
+
+            // Validate age (Must be an integer)
+            int age;
+            while (true) {
+                System.out.print("Enter Age: ");
+                try {
+                    age = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    if (age > 0) {
+                        break;
+                    }
+                    System.out.println("Invalid age! Age must be a positive number. Try again:");
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input! Age must be a number. Try again:");
+                    scanner.next(); // Consume invalid input
+                }
+            }
+
+            // Validate gender (Must be M, F, or O)
+            String gender;
+            while (true) {
+                System.out.print("Enter Gender (M/F/O): ");
+                gender = scanner.nextLine().toUpperCase();
+                if (gender.equals("M") || gender.equals("F") || gender.equals("O")) {
+                    break;
+                }
+                System.out.println("Invalid gender! Please enter M (Male), F (Female), or O (Other). Try again:");
+            }
+
+            // Contact Details
+            String contactDetails = "";
+            while (true) {
+                System.out.print("Enter Contact Details: ");
+                contactDetails = scanner.nextLine().trim(); // Remove leading/trailing spaces
+                if (contactDetails.matches("\\d{9,}")) {
+                    break; // Valid input, exit loop
+                }
+                System.out.println("Invalid contact number! Only numbers are allowed, and it must be at least 10 digits long. Try again:");
+            }
+
+
+            // Medical History
+            String medicalHistory;
+            while (true) {
+                System.out.print("Enter New Medical History: ");
+                medicalHistory = scanner.nextLine();
+                if (medicalHistory.matches("[a-zA-Z ]+")) {
+                    break;
+                }
+                System.out.println("Invalid input! Medical history must contain only letters and spaces. Try again:");
+            }
+
+            // Register patient
+            patients.add(new Patient(id, name, age, gender, contactDetails, medicalHistory));
+            System.out.println("Patient registered successfully!");
+        }
+
+
+        private static void viewPatients() {
         if (patients.isEmpty()) {
             System.out.println("No patients registered.");
         } else {
@@ -212,23 +267,85 @@ public class PatientController {
 
     private static void updatePatient() {
         System.out.print("Enter Patient ID to update: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+
+        int id;
+        while (true) {
+            try {
+                id = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid ID! Please enter a numeric value. Try again:");
+                scanner.next(); // Consume invalid input
+            }
+        }
 
         for (Patient p : patients) {
             if (p.id == id) {
-                System.out.print("Enter New Name: ");
-                String name = scanner.nextLine();
-                System.out.print("Enter New Age: ");
-                int age = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Enter New Gender: ");
-                String gender = scanner.nextLine();
-                System.out.print("Enter New Contact Details: ");
-                String contactDetails = scanner.nextLine();
-                System.out.print("Enter New Medical History: ");
-                String medicalHistory = scanner.nextLine();
+                // Validate name
+                String name;
+                while (true) {
+                    System.out.print("Enter New Name: ");
+                    name = scanner.nextLine();
+                    if (name.matches("[a-zA-Z ]+")) {
+                        break;
+                    }
+                    System.out.println("Invalid name! Only letters and spaces are allowed. Try again:");
+                }
 
+                // Validate age
+                int age;
+                while (true) {
+                    System.out.print("Enter New Age: ");
+                    try {
+                        age = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+                        if (age > 0) {
+                            break;
+                        }
+                        System.out.println("Invalid age! Age must be a positive number. Try again:");
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input! Age must be a number. Try again:");
+                        scanner.next(); // Consume invalid input
+                    }
+                }
+
+                // Validate gender
+                String gender;
+                while (true) {
+                    System.out.print("Enter New Gender (M/F/O): ");
+                    gender = scanner.nextLine().toUpperCase();
+                    if (gender.equals("M") || gender.equals("F") || gender.equals("O")) {
+                        break;
+                    }
+                    System.out.println("Invalid gender! Please enter M (Male), F (Female), or O (Other). Try again:");
+                }
+
+                // Contact Details
+
+                // Validate contact details (must be numeric and at least 10 digits)
+                String contactDetails;
+                while (true) {
+                    System.out.print("Enter New Contact Details: ");
+                    contactDetails = scanner.nextLine();
+                    if (contactDetails.matches("\\d{9,}")) { // Ensures at least 10 digits
+                        break;
+                    }
+                    System.out.println("Invalid contact number! It must contain only numbers and be at least 10 digits long. Try again:");
+                }
+
+                // Validate medical history (only letters and spaces allowed)
+                String medicalHistory;
+                while (true) {
+                    System.out.print("Enter New Medical History: ");
+                    medicalHistory = scanner.nextLine();
+                    if (medicalHistory.matches("[a-zA-Z ]+")) {
+                        break;
+                    }
+                    System.out.println("Invalid input! Medical history must contain only letters and spaces. Try again:");
+                }
+
+                // Update patient details
                 p.updateDetails(name, age, gender, contactDetails, medicalHistory);
                 System.out.println("Patient details updated successfully!");
                 return;
@@ -237,35 +354,76 @@ public class PatientController {
         System.out.println("Patient ID not found.");
     }
 
-    private static void deletePatient() {
-        System.out.print("Enter Patient ID to delete: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
 
+    private static void deletePatient() {
+        int id = -1;
+
+        // Keep prompting the user until a valid integer is entered
+        while (true) {
+            System.out.print("Enter Patient ID to delete (only integers allowed): ");
+            if (scanner.hasNextInt()) {  // Check if input is an integer
+                id = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+                break;  // Exit loop if valid integer is entered
+            } else {
+                System.out.println("Invalid input! Please enter a valid integer for Patient ID.");
+                scanner.nextLine(); // Consume invalid input
+            }
+        }
+
+        // Check if the patient exists in the list
         Iterator<Patient> iterator = patients.iterator();
         while (iterator.hasNext()) {
             Patient p = iterator.next();
             if (p.id == id) {
-                iterator.remove();
+                iterator.remove(); // Remove the patient from the list
                 System.out.println("Patient record deleted successfully!");
-                return;
+                return; // Exit the method after deleting the record
             }
         }
+
+        // If patient ID is not found
         System.out.println("Patient ID not found.");
     }
 
-    private static void searchPatient() {
-        System.out.print("Enter Patient ID or Name to search: ");
-        String input = scanner.nextLine();
 
-        for (Patient p : patients) {
-            if (String.valueOf(p.id).equals(input) || p.name.equalsIgnoreCase(input)) {
-                System.out.println(p);
-                return;
+    private static void searchPatient() {
+        String input;
+        int id = -1;
+
+        // Prompt user to input a valid ID (integer) until they do so
+        while (true) {
+            System.out.print("Enter Patient ID to search (only integers allowed): ");
+            input = scanner.nextLine();
+
+            if (isInteger(input)) {
+                id = Integer.parseInt(input); // Convert input to integer if it's valid
+                break; // Exit the loop once valid ID is entered
+            } else {
+                System.out.println("Invalid input! Please enter a valid integer for Patient ID.");
             }
         }
+
+        // Search by ID
+        for (Patient p : patients) {
+            if (p.id == id) {
+                System.out.println(p); // Print patient details
+                return; // Exit the method after finding the patient
+            }
+        }
+
+        // If patient ID is not found
         System.out.println("Patient not found.");
     }
+    private static boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input); // Try to parse the input as an integer
+            return true;
+        } catch (NumberFormatException e) {
+            return false; // Return false if it's not an integer
+        }
+    }
+
     static void tableG() {
         System.out.println("\n                                                  ===============Patient Handler System==============");
 
